@@ -14,16 +14,16 @@
 ## 算法基础
 ### 多项式朴素贝叶斯分类器
 采用贝叶斯定理进行概率估计，假设特征条件独立：
-$$ P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y) $$
+P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y) 
 
 **具体应用形式**：
-1. 计算先验概率：$ P(Spam) = \frac{垃圾邮件数}{总邮件数} $
-2. 计算条件概率：$ P(单词_i|Spam) = \frac{单词_i在垃圾邮件中出现次数+1}{垃圾邮件总词数+唯一词数} $
-3. 分类决策：$ argmax_{y} P(y) \prod_{i=1}^{n}P(x_i|y) $
+1. 计算先验概率： P(Spam) = \frac{垃圾邮件数}{总邮件数} 
+2. 计算条件概率： P(单词_i|Spam) = \frac{单词_i在垃圾邮件中出现次数+1}{垃圾邮件总词数+唯一词数} 
+3. 分类决策：$ argmax_{y} P(y) \prod_{i=1}^{n}P(x_i|y) 
 
 ## 数据处理流程
 ### 预处理步骤
-```python
+
 1. 文件读取：读取UTF-8编码的文本文件
 2. 无效字符过滤：正则表达式 [.【】0-9、——。，！~\*] 移除非文字字符
 3. 中文分词：使用jieba进行精准模式分词
@@ -55,3 +55,5 @@ vectorizer = TfidfVectorizer(
     tokenizer=lambda x: x.split(),
     token_pattern=None
 )
+
+
