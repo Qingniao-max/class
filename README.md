@@ -19,7 +19,7 @@ P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y)
 **具体应用形式**：
 1. 计算先验概率： P(Spam) = \frac{垃圾邮件数}{总邮件数} 
 2. 计算条件概率： P(单词_i|Spam) = \frac{单词_i在垃圾邮件中出现次数+1}{垃圾邮件总词数+唯一词数} 
-3. 分类决策：$ argmax_{y} P(y) \prod_{i=1}^{n}P(x_i|y) 
+3. 分类决策： argmax_{y} P(y) \prod_{i=1}^{n}P(x_i|y) 
 
 ## 数据处理流程
 ### 预处理步骤
@@ -38,7 +38,7 @@ P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y)
 
 ## 高频词/TF-IDF两种特征模式的切换方法
 ### 切换为高频词模式：
-# 在特征提取部分修改为：
+#### 在特征提取部分修改为：
 from collections import Counter
 
 def get_top_words(texts, top_n=100):
@@ -49,7 +49,7 @@ top_words = get_top_words(train_texts)
 vectorizer = CountVectorizer(vocabulary=top_words)
 
 ### 切换为TF-IDF模式：
-# 在特征提取部分修改为：
+#### 在特征提取部分修改为：
 vectorizer = TfidfVectorizer(
     max_features=100,
     tokenizer=lambda x: x.split(),
