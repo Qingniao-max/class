@@ -56,4 +56,9 @@ vectorizer = TfidfVectorizer(
     token_pattern=None
 )
 
+# 样本平衡处理
+<img src="images/4.png" width="800" alt="作业4">
+
+# 增加模型评估指标
+<img src="images/5.png" width="800" alt="作业5">
 
