@@ -47,14 +47,13 @@ P(w∣C)：词项 ww 在类别 C 中的条件概率（通过词频统计 + �
 ## 高频词/TF-IDF两种特征模式的切换方法
 ### 切换为高频词模式：
 #### 在特征提取部分修改为：
-$$(
-from collections import Counter
+$$(from collections import Counter)$$
 
-def get_top_words(texts, top_n=100):
+$$(def get_top_words(texts, top_n=100):
     all_words = chain(*[text.split() for text in texts])
-    return [w for w,_ in Counter(all_words).most_common(top_n)]
+    return [w for w,_ in Counter(all_words).most_common(top_n)])$$
 
-top_words = get_top_words(train_texts)
+$$(top_words = get_top_words(train_texts)
 vectorizer = CountVectorizer(vocabulary=top_words)
 )$$
 
