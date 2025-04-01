@@ -1,3 +1,14 @@
+# Word2vec25问题
+
+mask_index self.unk_index add_token
+indices context 和 target mask_index
+context的分词后的词数 target_df 和 target_size target 
+sum vocabulary_size
+DataLoader 训练模式 和 Dropout optimizer max
+1e8 5 0
+torch.cuda torch.cuda.is_available()
+target_word eval()
+0 embedding_size 减少
 # 代码部署
 <img src="images/1.png" width="800" alt="作业1">
 
