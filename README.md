@@ -17,13 +17,13 @@
 ## 算法基础：多项式朴素贝叶斯分类器
 ### 条件概率独立性假设
 多项式朴素贝叶斯假设特征（如词项）在给定类别条件下是相互独立的。即：
-<img src="images/6.png" width="200" >
+<img src="images/6.png" width="800" >
 
 其中 wi​ 表示词项，C表示类别。尽管现实中词项间存在关联，但这一简化假设显著降低了计算复杂度。
 
 ### 贝叶斯定理的应用形式
 对于邮件分类任务，计算后验概率 P(C∣邮件内容)，选择最大概率的类别：
-<img src="images/7.png" width="200" >
+<img src="images/7.png" width="800" >
 
 P(C)：类别的先验概率（训练集中类别占比）。
 P(w∣C)：词项 ww 在类别 C 中的条件概率（通过词频统计 + 拉普拉斯平滑计算）。
@@ -47,14 +47,16 @@ P(w∣C)：词项 ww 在类别 C 中的条件概率（通过词频统计 + �
 ## 高频词/TF-IDF两种特征模式的切换方法
 ### 切换为高频词模式：
 #### 在特征提取部分修改为：
-$$(from collections import Counter
+$$(
+from collections import Counter
 
 def get_top_words(texts, top_n=100):
     all_words = chain(*[text.split() for text in texts])
     return [w for w,_ in Counter(all_words).most_common(top_n)]
 
 top_words = get_top_words(train_texts)
-vectorizer = CountVectorizer(vocabulary=top_words))$$
+vectorizer = CountVectorizer(vocabulary=top_words)
+)$$
 
 ### 切换为TF-IDF模式：
 #### 在特征提取部分修改为：
