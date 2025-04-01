@@ -6,7 +6,7 @@
 10.sum 11.vocabulary_size
 12.DataLoader 13.训练模式 和 Dropout 14.optimizer 15.max
 16.1e8 17. 5 18. 0
-19.torch.cuda 20.torch.cuda.is_available()
+19.torch.cuda 20.torch.cuda
 21.target_word 22.eval()
 23.0 24. embedding_size 25. 减少
 
