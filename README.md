@@ -1,8 +1,8 @@
 # Word2vec25问题
 
 1.mask_index 2.self.unk_index 3.add_token
-4.indices 5.context 和 target 6.mask_index
-7.context的分词后的词数 8.target_df 和 target_size 9.target 
+4.indices 5.context  target 6.mask_index
+7.measure_len 8.target_df 和 target_size 9.target 
 10.sum 11.vocabulary_size
 12.DataLoader 13.训练模式 和 Dropout 14.optimizer 15.max
 16.1e8 17. 5 18. 0
