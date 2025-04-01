@@ -13,13 +13,21 @@
 
 ## 算法基础
 ### 多项式朴素贝叶斯分类器
-采用贝叶斯定理进行概率估计，假设特征条件独立：
-P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y) 
 
-**具体应用形式**：
-1. 计算先验概率： P(Spam) = \frac{垃圾邮件数}{总邮件数} 
-2. 计算条件概率： P(单词_i|Spam) = \frac{单词_i在垃圾邮件中出现次数+1}{垃圾邮件总词数+唯一词数} 
-3. 分类决策： argmax_{y} P(y) \prod_{i=1}^{n}P(x_i|y) 
+## 算法基础：多项式朴素贝叶斯分类器
+### 条件概率独立性假设
+多项式朴素贝叶斯假设特征（如词项）在给定类别条件下是相互独立的。即：
+<img src="images/6.png" width="200" >
+
+其中 wi​ 表示词项，C表示类别。尽管现实中词项间存在关联，但这一简化假设显著降低了计算复杂度。
+
+### 贝叶斯定理的应用形式
+对于邮件分类任务，计算后验概率 P(C∣邮件内容)，选择最大概率的类别：
+<img src="images/7.png" width="200" >
+
+P(C)：类别的先验概率（训练集中类别占比）。
+P(w∣C)：词项 ww 在类别 C 中的条件概率（通过词频统计 + 拉普拉斯平滑计算）。
+
 
 ## 数据处理流程
 ### 预处理步骤
@@ -39,22 +47,22 @@ P(y|x_1,...,x_n) \propto P(y) \prod_{i=1}^{n}P(x_i|y)
 ## 高频词/TF-IDF两种特征模式的切换方法
 ### 切换为高频词模式：
 #### 在特征提取部分修改为：
-from collections import Counter
+$$(from collections import Counter
 
 def get_top_words(texts, top_n=100):
     all_words = chain(*[text.split() for text in texts])
     return [w for w,_ in Counter(all_words).most_common(top_n)]
 
 top_words = get_top_words(train_texts)
-vectorizer = CountVectorizer(vocabulary=top_words)
+vectorizer = CountVectorizer(vocabulary=top_words))$$
 
 ### 切换为TF-IDF模式：
 #### 在特征提取部分修改为：
-vectorizer = TfidfVectorizer(
+$$(vectorizer = TfidfVectorizer(
     max_features=100,
     tokenizer=lambda x: x.split(),
     token_pattern=None
-)
+))$$
 
 # 样本平衡处理
 <img src="images/4.png" width="800" alt="作业4">
