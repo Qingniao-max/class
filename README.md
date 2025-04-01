@@ -1,14 +1,15 @@
 # Word2vec25问题
 
-mask_index self.unk_index add_token
-indices context 和 target mask_index
-context的分词后的词数 target_df 和 target_size target 
-sum vocabulary_size
-DataLoader 训练模式 和 Dropout optimizer max
-1e8 5 0
-torch.cuda torch.cuda.is_available()
-target_word eval()
-0 embedding_size 减少
+1.mask_index 2.self.unk_index 3.add_token
+4.indices 5.context 和 target 6.mask_index
+7.context的分词后的词数 8.target_df 和 target_size 9.target 
+10.sum 11.vocabulary_size
+12.DataLoader 13.训练模式 和 Dropout 14.optimizer 15.max
+16.1e8 17. 5 18. 0
+19.torch.cuda 20.torch.cuda.is_available()
+21.target_word 22.eval()
+23.0 24. embedding_size 25. 减少
+
 # 代码部署
 <img src="images/1.png" width="800" alt="作业1">
 
