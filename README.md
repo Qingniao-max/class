@@ -1,14 +1,63 @@
 # Word2vec25问题
+## Vocabulary类
+1.mask_index
 
-1.mask_index 2.self.unk_index 3.add_token
-4.indices 5.context  target 6.mask_index
-7.measure_len 8.target_df 和 target_size 9.target 
-10.sum 11.vocabulary_size
-12.DataLoader 13.训练模式 和 Dropout 14.optimizer 15.max
-16.1e8 17. 5 18. 0
-19.torch.cuda 20.torch.cuda
-21.target_word 22.eval()
-23.0 24. embedding_size 25. 减少
+2.self.unk_index
+
+3.add_token
+
+## CBOWVectorizer类
+4.indices
+
+5.context 和 target
+
+6.mask_index
+
+## CBOWDataset类 
+7.context的分词后的词数
+
+8.target_df 和 target_size
+
+9.target
+
+## 模型结构
+10.sum
+
+11.vocabulary_size
+
+## 训练流程
+12.DataLoader
+
+13.训练模式 和 Dropout
+
+14.optimizer
+
+15.max
+
+## 训练状态管理
+16.1e8
+
+17.5
+
+18.0
+
+## 设备与随机种子
+19.torch.cuda
+
+20.torch.cuda.is_available()
+
+## 推理与测试
+21.target_word
+
+22.eval()
+
+## 关键参数
+23.0
+
+24.embedding_size
+
+25.减少
+
 
 # 代码部署
 <img src="images/1.png" width="800" alt="作业1">
@@ -16,64 +65,62 @@
 # 优化特征选择方法
 <img src="images/2.png" width="800" alt="作业2">
 
-# 邮件分类项目
+---
 
-## 核心功能说明
-本项目实现基于文本内容的邮件二分类（垃圾邮件/普通邮件），提供两种特征构建模式：
-- 高频词特征选择模式
-- TF-IDF特征加权模式
-
-## 算法基础
-### 多项式朴素贝叶斯分类器
+# 代码核心功能说明
 
 ## 算法基础：多项式朴素贝叶斯分类器
-### 条件概率独立性假设
+- 条件概率独立性假设
 多项式朴素贝叶斯假设特征（如词项）在给定类别条件下是相互独立的。即：
-<img src="images/6.png" width="800" >
+
+$$P(w_1, w_2, \dots, w_n \mid C) = \prod_{i=1}^n P(w_i \mid C)$$
 
 其中 wi​ 表示词项，C表示类别。尽管现实中词项间存在关联，但这一简化假设显著降低了计算复杂度。
 
-### 贝叶斯定理的应用形式
+- 贝叶斯定理的应用形式
 对于邮件分类任务，计算后验概率 P(C∣邮件内容)，选择最大概率的类别：
-<img src="images/7.png" width="800" >
+
+$$C_{\text{pred}} = \mathop{\arg\max}\limits_{C} \left[ P(C) \prod_{w \in \text{邮件}} P(w \mid C) \right]$$
 
 P(C)：类别的先验概率（训练集中类别占比）。
-P(w∣C)：词项 ww 在类别 C 中的条件概率（通过词频统计 + 拉普拉斯平滑计算）。
-
+P(w∣C)：词项 w 在类别 C 中的条件概率（通过词频统计 + 拉普拉斯平滑计算）。
 
 ## 数据处理流程
-### 预处理步骤
+- 分词处理：使用分词工具（如 jieba 中文分词或 nltk.word_tokenize 英文分词）将邮件文本拆分为词项列表。
+- 停用词过滤：加载停用词表（如 nltk.corpus.stopwords 或自定义列表），过滤无意义词项。
+- 预处理链：文件读取，无效字符过滤，中文分词，停用词过滤，文本标准化。
 
-1. 文件读取：读取UTF-8编码的文本文件
-2. 无效字符过滤：正则表达式 [.【】0-9、——。，！~\*] 移除非文字字符
-3. 中文分词：使用jieba进行精准模式分词
-4. 停用词过滤：
-   - 显式过滤：直接去除长度≤1的词语
-   - 隐式过滤：通过后续特征选择实现
-5. 文本标准化：转换为空格连接的分词字符串
+## 特征构建过程
+- 方法对比
 
-## 特征构建流程
-### 方法对比
-<img src="images/3.png" width="500" alt="对比">
+| **方法**       | **数学表达**                                                                 | **实现差异**                                                                 |
+|----------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| **高频词特征** | 选择词频 Top-N 的词作为特征，特征值为词频：<br> $$\text{Count}(w)$$          | 使用 `CountVectorizer(max_features=N)` 直接统计词频。                         |
+| **TF-IDF**     | 特征值为词频×逆文档频率：<br> $$\text{TF-IDF}(w) = \text{TF}(w) \times \log\frac{N}{\text{DF}(w)+1}$$ | 使用 `TfidfVectorizer` 自动加权，或手动计算 IDF 后加权。                       |
+
+- 核心差异
+高频词：侧重区分高频词与低频词，可能受常见词（如“的”“是”）干扰。
+TF-IDF：通过 IDF 降低常见词的权重，更关注类别区分性强的词（如专业术语）。
 
 ## 高频词/TF-IDF两种特征模式的切换方法
-### 切换为高频词模式：
-#### 在特征提取部分修改为：
-$(
-from collections import Counter
-def get_top_words(texts, top_n=100):
-    all_words = chain(*[text.split() for text in texts])
-    return [w for w,_ in Counter(all_words).most_common(top_n)]
-top_words = get_top_words(train_texts)
-vectorizer = CountVectorizer(vocabulary=top_words))$
+- 在代码中通过 参数配置 或 条件分支 切换特征提取器，示例如下：
+$$(from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer)$$
 
-### 切换为TF-IDF模式：
-#### 在特征提取部分修改为：
-$$(vectorizer = TfidfVectorizer(
-    max_features=100,
-    tokenizer=lambda x: x.split(),
-    token_pattern=None
-))$$
+# 配置参数（例如：feature_mode = 'high_freq' 或 'tfidf'）
+$(feature_mode = 't fidf')$
+
+$(if feature_mode == 'high_freq':)$
+    $(vectorizer = CountVectorizer(max_features=1000))$  # 选择 Top 1000 高频词
+$(elif feature_mode == 'tfidf':)$
+    $(vectorizer = TfidfVectorizer(max_features=1000))$  # 使用 TF-IDF 加权
+
+# 统一接口训练与预测
+$(X_train = vectorizer.fit_transform(train_texts)
+X_test = vectorizer.transform(test_texts))$
+
+- 关键点
+保持 vectorizer 的接口一致性（fit_transform/transform）。
+调整 max_features 参数控制特征维度。
 
 # 样本平衡处理
 <img src="images/4.png" width="800" alt="作业4">
